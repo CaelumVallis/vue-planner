@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <div class="main-container container">
+    <div class="main-container container-fluid">
       <div class="row">
         <h2 class="text-center">Vue Planner</h2>
       </div>
       <div class="row">
         <div class="col"></div>
-        <div class="col-8">
+        <div class="col-6">
           <Tasks />
         </div>
         <div class="col"></div>
@@ -28,6 +28,6 @@
 
 <style>
   .main-container {
-    background-color: red;
+    background-color: #bebebe;
   }
 </style>

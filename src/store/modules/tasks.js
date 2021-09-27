@@ -3,19 +3,24 @@ export default {
     tasks: []
   },
   getters: {
-
+    tasks(store) {
+      return store.tasks;
+    }
   },
   actions: {
     fetchTasks() {
       this.commit('setTasks', JSON.parse(localStorage.getItem('tasks'))) ;
+    },
+    syncWithStorage(store) {
+      localStorage.setItem('tasks', JSON.stringify(store.state.tasks));
     }
   },
   mutations: {
     setTasks(store, tasks) {
-      store.state.tasks = tasks || [];
+      store.tasks = tasks || [];
     },
-    // addTask(store, task) {
-    //   store.state.tasks.push(task);
-    // }
+    addTask(store, task) {
+      store.tasks.push(task);
+    }
   }
 }
