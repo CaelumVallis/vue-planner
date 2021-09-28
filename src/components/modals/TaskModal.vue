@@ -13,7 +13,7 @@
             <form>
               <div class="row">
                 <div class="col-4">
-                  <div class="image-plug"></div>
+                <div class="image-plug"></div>
 <!--                    <div class="form-group">-->
 <!--                      <input @change="imageUpload" type="file" class="form-control-file">-->
 <!--                    </div>-->
@@ -21,7 +21,11 @@
                 <div class="col-8">
                   <form>
                     <div class="form-group col-12 mb-2">
-                      <input v-model="formData.title" type="text" class="form-control" placeholder="Title">
+                      <input
+                        v-model="formData.title"
+                        type="text"
+                        class="form-control"
+                        placeholder="Title">
                     </div>
                     <div class="row mb-2">
                       <div class="form-group col-6">
@@ -35,23 +39,35 @@
                         </select>
                       </div>
                       <div class="form-group col-6">
-                        <input v-model="formData.pointName"
+                        <input
+                          v-model="formData.pointValue"
+                          type="text"
+                          class="form-control"
+                          placeholder="Point value"
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div
+                        :class="{ 'col-6': formData.taskType === this.constants.taskType.pointsOfTotalForTime,
+                                  'col-12': formData.taskType !== this.constants.taskType.pointsOfTotalForTime }"
+                         class="form-group"
+                      >
+                        <input
+                          v-model="formData.totalPoints"
                           v-if="formData.taskType !== this.constants.taskType.completed &&
                                 formData.taskType !== ''"
                           type="text"
                           class="form-control"
-                          placeholder="Point name">
+                          placeholder="Total points">
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-6">
-                        <input v-model="formData.pointValue" type="text" class="form-control" placeholder="Point value">
-                      </div>
-                      <div
-                        v-if="formData.taskType === this.constants.taskType.pointsOfTotalForTime"
-                        class="form-group col-6">
-                        <input type="text" class="form-control" placeholder="For time">
-                      </div>
+<!--                      <div class="form-group col-6">-->
+<!--                        <input-->
+<!--                          v-if="formData.taskType === this.constants.taskType.pointsOfTotalForTime"-->
+<!--                          type="text"-->
+<!--                          class="form-control"-->
+<!--                          placeholder="For time">-->
+<!--                      </div>-->
                     </div>
                   </form>
                 </div>
@@ -60,10 +76,19 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="addTask" type="button" data-bs-dismiss="modal"
-                  data-bs-target="#taskModal" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                  data-bs-target="#taskModal">Close</button>
+          <button
+            @click="addTask"
+            type="button"
+            data-bs-dismiss="modal"
+            data-bs-target="#taskModal"
+            class="btn btn-primary"
+          >Save changes</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            data-bs-target="#taskModal"
+          >Close</button>
         </div>
       </div>
     </div>
@@ -79,8 +104,9 @@
         formData: {
           title: '',
           taskType: '',
-          pointName: '',
+          totalPoints: '',
           pointValue: '',
+          completed: false,
           image: ''
         }
       }
@@ -90,20 +116,20 @@
     },
     methods: {
       addTask() {
-        this.$store.commit('addTask', this.formData);
+        this.$store.commit('addTask', {...this.formData, id: this.getId()});
         this.formData = {};
       },
+      getId() {
+        return '_' + Math.random().toString(36).substr(2, 9);
+      }
       // imageUpload(e) {
       //   this.formData.image = e.target.files[0];
-      // },
-      logChange(args) {
-        console.log(args);
-      }
+      // }
     }
   }
 </script>
 
-<style>
+<style scoped>
   .image-plug {
     width: 200px;
     height: 100%;

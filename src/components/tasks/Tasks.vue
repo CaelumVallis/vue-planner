@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card px-2">
     <div class="card-body container">
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">Add</button>
       <div class="row mt-2">
@@ -7,6 +7,7 @@
           v-if="tasks.length"
           v-for="task in tasks"
           :task="task"
+          @editTask="editTask"
         />
       </div>
     </div>
@@ -33,7 +34,11 @@
     created() {
       this.$store.dispatch('fetchTasks');
     },
-    methods: {}
+    methods: {
+      editTask(task) {
+        this.$store.commit('editTask', {...task, completed: !task.completed})
+      }
+    }
   }
 </script>
 

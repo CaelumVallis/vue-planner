@@ -21,6 +21,9 @@ export default {
     },
     addTask(store, task) {
       store.tasks.push(task);
-    }
+    },
+    editTask(store, task) {
+      store.tasks = store.tasks.map((item) => item.id === task.id ? task : item);
+    },
   }
 }
