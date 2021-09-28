@@ -18,7 +18,7 @@
   export default {
     props: ['task'],
     mounted() {
-      console.log(this.task);
+      // console.log(this.task);
     }
   }
 </script>

@@ -31,7 +31,6 @@
       }
     },
     created() {
-      console.log(this.$store);
       this.$store.dispatch('fetchTasks');
     },
     methods: {}
