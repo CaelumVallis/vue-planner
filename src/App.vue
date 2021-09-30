@@ -26,8 +26,9 @@
   }
 </script>
 
-<style>
+<style scoped>
   .main-container {
     background-color: #bebebe;
+    min-height: 100vh;
   }
 </style>
