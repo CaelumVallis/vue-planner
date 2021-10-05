@@ -5,7 +5,7 @@
       class="card p-2">
 
       <div class="dialog-header d-flex justify-content-between">
-        <h4>Add new task</h4>
+        <h4>{{titles.modalTitle}}</h4>
         <button
           @click="$emit('close')"
           type="button" class="btn-close"></button>
@@ -53,16 +53,21 @@
                   v-if="formData.taskType !== this.constants.taskType.completed &&
                         formData.taskType !== ''"
                   class="row mb-2">
-                  <div
-                    :class="{ 'col-6': formData.taskType === this.constants.taskType.pointsOfTotalForTime,
-                              'col-12': formData.taskType !== this.constants.taskType.pointsOfTotalForTime }"
-                    class="form-group"
-                  >
+                  <div class="form-group col-6">
                     <input
                       v-model="formData.totalPoints"
                       type="text"
                       class="form-control"
-                      placeholder="Total points">
+                      placeholder="Total points"
+                    >
+                  </div>
+                  <div class="form-group col-6">
+                    <input
+                      v-model="formData.pointName"
+                      type="text"
+                      class="form-control"
+                      placeholder="Point name"
+                    >
                   </div>
                   <!--                      <div class="form-group col-6">-->
                   <!--                        <input-->
@@ -85,10 +90,10 @@
           class="btn btn-secondary mx-2"
         >Close</button>
         <button
-          @click="addTask"
+          @click="saveChanges"
           type="button"
           class="btn btn-primary"
-        >Save changes</button>
+        >{{titles.buttonTitle}}</button>
       </div>
     </div>
   </div>
@@ -103,17 +108,26 @@
     data() {
       return {
         formData: {},
+        titles: {}
       }
     },
     created() {
       this.constants = modalConstants;
-      this.formData = this.initialValues;
+      this.formData = {...this.initialValues};
+      this.formData.id ? this.titles = modalConstants.titles.editMode : this.titles = modalConstants.titles.addMode;
+
       document.querySelector('body').classList.add('modal-open');
     },
     methods: {
+      saveChanges() {
+        this.formData.id ? this.editTask() : this.addTask();
+      },
       addTask() {
         this.$store.commit('addTask', {...this.formData, id: this.getId()});
-        this.formData = {};
+        this.$emit('close');
+      },
+      editTask() {
+        this.$store.commit('editTask', this.formData);
         this.$emit('close');
       },
       getId() {

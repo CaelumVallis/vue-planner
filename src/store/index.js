@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import tasks from "./modules/tasks";
 
 Vue.use(Vuex);
+Vue.config.devtools = true;
 
 export default new Vuex.Store({
     modules: {
