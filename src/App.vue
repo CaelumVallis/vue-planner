@@ -9,7 +9,9 @@
         <div class="col-6">
           <Tasks />
         </div>
-        <div class="col"></div>
+        <div class="col-3">
+          <userProfile />
+        </div>
       </div>
     </div>
   </div>
@@ -17,11 +19,13 @@
 
 <script>
   import Tasks from '@/components/tasks/Tasks';
+  import userProfile from '@/components/userProfile/userProfile';
 
   export default {
     name: 'App',
     components: {
       Tasks,
+      userProfile
     },
   }
 </script>
