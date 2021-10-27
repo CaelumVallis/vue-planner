@@ -24,5 +24,5 @@ export const taskDefaultObject = {
   pointValue: null,
   pointName: '',
   completed: false,
-  image: ''
+  imageUrl: ''
 };

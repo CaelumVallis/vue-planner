@@ -2,7 +2,11 @@
   <div
     class="card container planner-item mb-2">
     <div class="card-body row align-items-center justify-content-between">
-      <div class="col-2 image-plug"></div>
+      <div
+        v-if="task.imageUrl"
+        class="col-2 img-container">
+        <img :src="task.imageUrl"/>
+      </div>
       <div class="col-4 d-flex">
         <h4>{{task.title}}</h4>
       </div>
@@ -16,7 +20,10 @@
             type="number"
             class="rounded form-control p-0 w-100"
           >
-          <span class="mx-1">/ {{task.totalPoints}} {{task.pointName}}</span>
+          <span class="mx-1">
+            <span v-if="task.totalPoints">/ {{task.totalPoints}}</span>
+            {{task.pointName}}
+          </span>
         </div>
         <div v-if="this.task.taskType === this.constants.taskType.completed">
           <input
@@ -67,10 +74,11 @@
     max-height: 15vh;
   }
 
-  .image-plug {
-    width: 100px;
-    height: 100%;
-    background-color: gray;
+  .img-container img{
+    max-height:75%;
+    max-width:75%;
+    height:auto;
+    width:auto;
   }
 
   input[type=number] {

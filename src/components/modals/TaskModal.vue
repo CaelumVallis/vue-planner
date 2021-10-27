@@ -2,8 +2,7 @@
   <div class="backdrop d-flex justify-content-center align-items-center">
     <div
       v-bind:class="{ show: modalOpen }"
-      class="card p-2">
-
+      class="card p-2 w-50">
       <div class="dialog-header d-flex justify-content-between">
         <h4>{{titles.modalTitle}}</h4>
         <button
@@ -12,13 +11,20 @@
       </div>
 
       <div class="dialog-body container-fluid px-0">
-        <form>
+        <form
+          id="modalForm"
+          @submit.prevent="saveChanges"
+        >
           <div class="row">
             <div class="col-4">
-              <div class="image-plug"></div>
-              <!--                    <div class="form-group">-->
-              <!--                      <input @change="imageUpload" type="file" class="form-control-file">-->
-              <!--                    </div>-->
+              <div class="form-group">
+                <img id="imgPreview" v-if="formData.imageUrl" :src="formData.imageUrl" class="mb-2"/>
+                <input
+                  @change="imageUpload"
+                  type="file"
+                  accept="image/jpeg"
+                  class="form-control-file">
+              </div>
             </div>
             <div class="col-8">
               <form>
@@ -87,11 +93,12 @@
         <button
           @click="$emit('close')"
           type="button"
+          form="modalForm"
           class="btn btn-secondary mx-2"
         >Close</button>
         <button
-          @click="saveChanges"
-          type="button"
+          type="submit"
+          form="modalForm"
           class="btn btn-primary"
         >{{titles.buttonTitle}}</button>
       </div>
@@ -102,13 +109,15 @@
 
 <script>
   import { modalConstants } from "../../assets/constants";
+
   export default {
     name: "TaskModal",
     props: { modalOpen: Boolean, initialValues: Object },
     data() {
       return {
         formData: {},
-        titles: {}
+        titles: {},
+        errors: []
       }
     },
     created() {
@@ -132,10 +141,17 @@
       },
       getId() {
         return '_' + Math.random().toString(36).substr(2, 9);
+      },
+      async imageUpload(e) {
+        this.formData.imageUrl = await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.readAsDataURL(e.target.files[0]);
+          fr.onload = () => {
+            resolve(fr.result);
+          };
+          fr.onerror = reject;
+        });
       }
-      // imageUpload(e) {
-      //   this.formData.image = e.target.files[0];
-      // }
     }
   }
 </script>
@@ -150,9 +166,10 @@
     bottom: 0;
   }
 
-  .image-plug {
-    width: 200px;
-    height: 100%;
-    background-color: gray;
+  #imgPreview {
+    max-height:75%;
+    max-width:75%;
+    height:auto;
+    width:auto;
   }
 </style>
