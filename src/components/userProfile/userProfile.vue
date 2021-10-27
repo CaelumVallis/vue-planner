@@ -31,8 +31,6 @@
     export default {
         name: 'userProfile',
         created() {
-            if (!localStorage.getItem('user')) return;
-
             this.$store.dispatch('fetchUser');
         },
         computed: {

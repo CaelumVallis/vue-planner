@@ -19,7 +19,9 @@ export default {
 
     actions: {
         fetchUser() {
-            this.commit('setUser', JSON.parse(localStorage.getItem('user')));
+            if (localStorage.getItem('user')) {
+                this.commit('setUser', JSON.parse(localStorage.getItem('user')));
+            }
         }
     },
 
