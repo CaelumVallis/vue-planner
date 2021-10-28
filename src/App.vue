@@ -7,7 +7,9 @@
         <div class="col-6">
           <Tasks />
         </div>
-        <div class="col"></div>
+        <div class="col-3">
+          <userProfile />
+        </div>
       </div>
       <AuthModal
         v-if="authModalOpen"
@@ -22,6 +24,7 @@
   import Tasks from '@/components/tasks/Tasks';
   import Header from "@/components/shared/Header";
   import AuthModal from "./components/modals/AuthModal";
+  import userProfile from '@/components/userProfile/userProfile';
 
   export default {
     name: 'App',
@@ -29,6 +32,7 @@
       AuthModal,
       Header,
       Tasks,
+      userProfile
     },
     data() {
       return {
