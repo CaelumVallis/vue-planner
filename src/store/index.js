@@ -4,6 +4,7 @@ import tasks from './modules/tasks';
 import user from './modules/user';
 
 Vue.use(Vuex);
+Vue.config.devtools = true;
 
 export default new Vuex.Store({
     modules: {
