@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-light px-5">
-    <h3>Vue-planner</h3>
+    <h3>Hello, {{this.$store.getters.currentUser.username || 'anonymous'}}</h3>
     <button
       @click="$emit('authBtnClick')"
       type="button"

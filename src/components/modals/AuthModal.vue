@@ -3,7 +3,7 @@
     <div
       class="show card p-3 w-50">
       <div class="dialog-header d-flex justify-content-between mb-3">
-        <h4>Login / register</h4>
+        <h4>{{$route.name}}</h4>
         <button
           @click="$emit('close')"
           type="button" class="btn-close"></button>
@@ -14,6 +14,16 @@
           id="modalForm"
           @submit.prevent="submit"
         >
+          <div
+            v-if="$route.name === 'Register'"
+            class="form-group mb-2">
+            <input
+              v-model="username"
+              type="text"
+              class="form-control"
+              placeholder="Enter username"
+            >
+          </div>
           <div class="form-group mb-2">
               <input
                 v-model="email"
@@ -35,16 +45,17 @@
 
       <div class="dialog-footer d-flex justify-content-end">
         <button
-          @click="$emit('close')"
+          v-if="$route.name === 'Login'"
+          @click="$emit('registerBtnClick')"
           type="button"
           form="modalForm"
-          class="btn btn-secondary mx-2"
-        >Close</button>
+          class="btn btn-outline-secondary mx-2"
+        >Don't have an account?</button>
         <button
           type="submit"
           form="modalForm"
           class="btn btn-primary"
-        >Login / register</button>
+        >{{$route.name}}</button>
       </div>
     </div>
   </div>
@@ -52,11 +63,12 @@
 
 <script>
   export default {
-    name: "LoginModal",
+    name: "AuthModal",
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        username: ''
       }
     },
     created() {
@@ -64,8 +76,15 @@
     },
     methods: {
       async submit() {
+        const authData = {email: this.email, password: this.password};
         try {
-          await this.$store.dispatch('login', {email: this.email, password: this.password})
+          if (this.$route.path === '/login') {
+            await this.$store.dispatch('login', authData);
+          } else if(this.$route.path === '/register') {
+            await this.$store.dispatch('register', {...authData, username: this.username});
+          }
+          this.$emit('close');
+          await this.$router.push('/');
         } catch(e) {}
       }
     }

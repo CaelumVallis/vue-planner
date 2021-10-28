@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header @authBtnClick="authModalOpen = true"/>
+    <Header @authBtnClick="navigateTo('/login')"/>
     <div class="main-container container-fluid">
       <div class="row">
         <div class="col"></div>
@@ -9,9 +9,10 @@
         </div>
         <div class="col"></div>
       </div>
-      <LoginModal
+      <AuthModal
         v-if="authModalOpen"
-        @close="authModalOpen = false"
+        @close="toggleAuthModal(false); navigateTo('/')"
+        @registerBtnClick="navigateTo('/register')"
       />
     </div>
   </div>
@@ -20,18 +21,35 @@
 <script>
   import Tasks from '@/components/tasks/Tasks';
   import Header from "@/components/shared/Header";
-  import LoginModal from "@/components/modals/LoginModal";
+  import AuthModal from "./components/modals/AuthModal";
 
   export default {
     name: 'App',
     components: {
-      LoginModal,
+      AuthModal,
       Header,
       Tasks,
     },
     data() {
       return {
         authModalOpen: false
+      }
+    },
+    watch: {
+      $route(to) {
+        if (to.path === '/login' || to.path === '/register') {
+          this.toggleAuthModal(true);
+        }
+      }
+    },
+    methods: {
+      navigateTo(path) {
+        if(this.$route.path !== path) {
+          this.$router.push(path);
+        }
+      },
+      toggleAuthModal(open) {
+        this.authModalOpen = open;
       }
     }
   }

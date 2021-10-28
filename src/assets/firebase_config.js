@@ -1,6 +1,7 @@
 export default {
   apiKey: "AIzaSyBcL1o-SDmI8BUEm2jvznVJrTf6nZ7goCA",
   authDomain: "vue-planner-32e41.firebaseapp.com",
+  databaseURL: "https://vue-planner-32e41-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "vue-planner-32e41",
   storageBucket: "vue-planner-32e41.appspot.com",
   messagingSenderId: "27893990312",
