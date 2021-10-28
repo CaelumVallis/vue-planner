@@ -1,7 +1,7 @@
 <template>
   <div class="backdrop d-flex justify-content-center align-items-center">
     <div
-      v-bind:class="{ show: modalOpen }"
+      :class="{ show: modalOpen }"
       class="card p-2 w-50">
       <div class="dialog-header d-flex justify-content-between">
         <h4>{{titles.modalTitle}}</h4>
@@ -75,13 +75,13 @@
                       placeholder="Point name"
                     >
                   </div>
-                  <!--                      <div class="form-group col-6">-->
-                  <!--                        <input-->
-                  <!--                          v-if="formData.taskType === this.constants.taskType.pointsOfTotalForTime"-->
-                  <!--                          type="text"-->
-                  <!--                          class="form-control"-->
-                  <!--                          placeholder="For time">-->
-                  <!--                      </div>-->
+                  <!--<div class="form-group col-6">-->
+                  <!--<input-->
+                  <!--v-if="formData.taskType === this.constants.taskType.pointsOfTotalForTime"-->
+                  <!--type="text"-->
+                  <!--class="form-control"-->
+                  <!--placeholder="For time">-->
+                  <!--</div>-->
                 </div>
               </form>
             </div>
@@ -124,7 +124,6 @@
       this.constants = modalConstants;
       this.formData = {...this.initialValues};
       this.formData.id ? this.titles = modalConstants.titles.editMode : this.titles = modalConstants.titles.addMode;
-
       document.querySelector('body').classList.add('modal-open');
     },
     methods: {

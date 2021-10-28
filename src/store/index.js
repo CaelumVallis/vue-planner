@@ -1,14 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import tasks from './modules/tasks';
-import user from './modules/user';
+import modules from "./modules";
 
 Vue.use(Vuex);
 Vue.config.devtools = true;
 
 export default new Vuex.Store({
-    modules: {
-        tasks,
-        user
-    }
+    modules
 });
