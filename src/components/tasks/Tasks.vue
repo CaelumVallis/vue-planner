@@ -9,10 +9,11 @@
       <div class="row mt-2">
         <Task
           v-for="task in tasks"
+          :key="task.id"
           :task="task"
-          v-if="tasks.length"
-          @editTask="editTask"
-          @taskClick="selectCurrentTask"
+          @toggleTask="toggleTask"
+          @deleteTask="deleteTask"
+          @taskSelect="selectCurrentTask"
         />
       </div>
     </div>
@@ -20,7 +21,7 @@
       v-if="modalOpen"
       :modalOpen="modalOpen"
       :initialValues="currentTask"
-      @close="modalOpen = false"
+      @close="closeModal"
     />
   </div>
 </template>
@@ -53,12 +54,19 @@
       this.currentTask = {...taskDefaultObject}
     },
     methods: {
-      editTask(task) {
+      toggleTask(task) {
         this.$store.commit('editTask', {...task, completed: !task.completed})
+      },
+      deleteTask(id) {
+        this.$store.commit('deleteTask', id)
       },
       selectCurrentTask(task) {
         this.currentTask = task;
         this.modalOpen = true;
+      },
+      closeModal() {
+        this.modalOpen = false;
+        this.currentTask = {...taskDefaultObject};
       }
     }
   }

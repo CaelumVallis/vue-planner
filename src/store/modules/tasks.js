@@ -28,5 +28,8 @@ export default {
     editTask(store, task) {
       store.tasks = store.tasks.map((item) => item.id === task.id ? task : item);
     },
+    deleteTask(store, id) {
+      store.tasks = store.tasks.filter(item => item.id !== id);
+    }
   }
 }

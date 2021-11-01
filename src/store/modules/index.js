@@ -1,7 +1,7 @@
 import tasks from './tasks';
-import user from './user';
+import auth from './auth';
 
 export default {
   tasks,
-  user
+  auth
 }

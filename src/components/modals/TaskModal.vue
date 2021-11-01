@@ -1,24 +1,30 @@
 <template>
   <div class="backdrop d-flex justify-content-center align-items-center">
     <div
-      v-bind:class="{ show: modalOpen }"
-      class="card p-2">
-
+      :class="{ show: modalOpen }"
+      class="card p-2 w-50">
       <div class="dialog-header d-flex justify-content-between">
-        <h4>Add new task</h4>
+        <h4>{{titles.modalTitle}}</h4>
         <button
           @click="$emit('close')"
           type="button" class="btn-close"></button>
       </div>
 
       <div class="dialog-body container-fluid px-0">
-        <form>
+        <form
+          id="modalForm"
+          @submit.prevent="saveChanges"
+        >
           <div class="row">
             <div class="col-4">
-              <div class="image-plug"></div>
-              <!--                    <div class="form-group">-->
-              <!--                      <input @change="imageUpload" type="file" class="form-control-file">-->
-              <!--                    </div>-->
+              <div class="form-group">
+                <img id="imgPreview" v-if="formData.imageUrl" :src="formData.imageUrl" class="mb-2"/>
+                <input
+                  @change="imageUpload"
+                  type="file"
+                  accept="image/jpeg"
+                  class="form-control-file">
+              </div>
             </div>
             <div class="col-8">
               <form>
@@ -53,24 +59,29 @@
                   v-if="formData.taskType !== this.constants.taskType.completed &&
                         formData.taskType !== ''"
                   class="row mb-2">
-                  <div
-                    :class="{ 'col-6': formData.taskType === this.constants.taskType.pointsOfTotalForTime,
-                              'col-12': formData.taskType !== this.constants.taskType.pointsOfTotalForTime }"
-                    class="form-group"
-                  >
+                  <div class="form-group col-6">
                     <input
                       v-model="formData.totalPoints"
                       type="text"
                       class="form-control"
-                      placeholder="Total points">
+                      placeholder="Total points"
+                    >
                   </div>
-                  <!--                      <div class="form-group col-6">-->
-                  <!--                        <input-->
-                  <!--                          v-if="formData.taskType === this.constants.taskType.pointsOfTotalForTime"-->
-                  <!--                          type="text"-->
-                  <!--                          class="form-control"-->
-                  <!--                          placeholder="For time">-->
-                  <!--                      </div>-->
+                  <div class="form-group col-6">
+                    <input
+                      v-model="formData.pointName"
+                      type="text"
+                      class="form-control"
+                      placeholder="Point name"
+                    >
+                  </div>
+                  <!--<div class="form-group col-6">-->
+                  <!--<input-->
+                  <!--v-if="formData.taskType === this.constants.taskType.pointsOfTotalForTime"-->
+                  <!--type="text"-->
+                  <!--class="form-control"-->
+                  <!--placeholder="For time">-->
+                  <!--</div>-->
                 </div>
               </form>
             </div>
@@ -82,13 +93,14 @@
         <button
           @click="$emit('close')"
           type="button"
+          form="modalForm"
           class="btn btn-secondary mx-2"
         >Close</button>
         <button
-          @click="addTask"
-          type="button"
+          type="submit"
+          form="modalForm"
           class="btn btn-primary"
-        >Save changes</button>
+        >{{titles.buttonTitle}}</button>
       </div>
     </div>
   </div>
@@ -97,31 +109,48 @@
 
 <script>
   import { modalConstants } from "../../assets/constants";
+
   export default {
     name: "TaskModal",
     props: { modalOpen: Boolean, initialValues: Object },
     data() {
       return {
         formData: {},
+        titles: {},
+        errors: []
       }
     },
     created() {
       this.constants = modalConstants;
-      this.formData = this.initialValues;
+      this.formData = {...this.initialValues};
+      this.formData.id ? this.titles = modalConstants.titles.editMode : this.titles = modalConstants.titles.addMode;
       document.querySelector('body').classList.add('modal-open');
     },
     methods: {
+      saveChanges() {
+        this.formData.id ? this.editTask() : this.addTask();
+      },
       addTask() {
         this.$store.commit('addTask', {...this.formData, id: this.getId()});
-        this.formData = {};
+        this.$emit('close');
+      },
+      editTask() {
+        this.$store.commit('editTask', this.formData);
         this.$emit('close');
       },
       getId() {
         return '_' + Math.random().toString(36).substr(2, 9);
+      },
+      async imageUpload(e) {
+        this.formData.imageUrl = await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.readAsDataURL(e.target.files[0]);
+          fr.onload = () => {
+            resolve(fr.result);
+          };
+          fr.onerror = reject;
+        });
       }
-      // imageUpload(e) {
-      //   this.formData.image = e.target.files[0];
-      // }
     }
   }
 </script>
@@ -136,9 +165,10 @@
     bottom: 0;
   }
 
-  .image-plug {
-    width: 200px;
-    height: 100%;
-    background-color: gray;
+  #imgPreview {
+    max-height:75%;
+    max-width:75%;
+    height:auto;
+    width:auto;
   }
 </style>
