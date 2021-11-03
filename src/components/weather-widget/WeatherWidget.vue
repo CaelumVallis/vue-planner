@@ -1,27 +1,53 @@
 <template>
-  <div class="weather-widget-wrapper">    
-    <div class="weather-search">
-      <input v-model="city" class="search-city" type="text" placeholder="Search city...">
-      <button @click="getWeather">
+  <div class="weather-widget-wrapper d-flex flex-column align-items-center">    
+    <div class="weather-search d-flex justify-content-center">
+      <input 
+        v-model="city" 
+        class="search-city" 
+        type="text" 
+        placeholder="Search city...">
+      <button 
+        @click="getWeather">
         &#128269;
       </button>
     </div>
-    <div v-if="searched" class="weather-information">
-      <div class="weather-statement">{{ weather.statement }}<img :src="weather.icon"></div>
-      <div class="weather-temperature">{{ weather.temperature }}</div>
-      <div class="weather-min-max-temp">
-        <div class="weather-min-temperature">{{ weather.minTemperature }}<i class="fas fa-temperature-low"></i></div>
-        <div class="weather-max-temperature">{{ weather.maxTemperature }}<i class="fas fa-temperature-high"></i></div>
+    <div 
+      v-if="searched" 
+      class="weather-information d-flex flex-column align-items-center">
+      <div class="weather-statement">
+        {{ weather.statement }}
+        <img 
+          :src="weather.icon">
       </div>
-      <div class="weather-additional-info">
-        <div class="weather-location-info">
+      <div class="weather-temperature d-flex justify-content-center align-items-center">
+        {{ weather.temperature }}
+      </div>
+      <div class="weather-min-max-temp d-flex">
+        <div class="weather-min-temperature d-flex justify-content-center align-items-center">
+          {{ weather.minTemperature }}
+          <i class="fas fa-temperature-low"></i>
+        </div>
+        <div class="weather-max-temperature d-flex justify-content-center align-items-center">
+          {{ weather.maxTemperature }}
+          <i class="fas fa-temperature-high"></i>
+        </div>
+      </div>
+      <div class="weather-additional-info d-flex">
+        <div class="weather-location-info text-center d-flex flex-column justify-content-center align-items-center">
           <i class="fas fa-map-marker-alt"></i>
           <p>{{ weather.localInfo }}</p>
         </div>
-        <div class="weather-humidity">{{ weather.humidity }}<i class="fas fa-tint"></i></div>
+        <div class="weather-humidity d-flex justify-content-center align-items-center">
+          {{ weather.humidity }}
+          <i class="fas fa-tint"></i>
+        </div>
       </div>
     </div>
-    <div v-else class="weather-initial-message">Please, enter correct city🌞</div>
+    <div 
+      v-else 
+      class="weather-initial-message d-flex align-items-center text-center">
+      Please, enter correct city🌞
+    </div>
   </div>
 </template>
 
@@ -80,7 +106,7 @@
         this.weather.icon = require(`../../assets/icons/${data.weather[0].icon}.png`);
       },
       setToLocalStorage() {
-        const city = localStorage.setItem('weather', this.city);
+        localStorage.setItem('weather', this.city);
       }
     },
     async mounted() {
@@ -104,15 +130,10 @@
   background-image: url('../../assets/img/background.gif');
   background-size: cover;
   background-repeat: no-repeat;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 
 .weather-search {
-  display: flex;
-  justify-content: center;
   width: 250px;
   padding-top: 25px;
   position: relative;
@@ -145,9 +166,14 @@ button {
 
 .weather-information {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+
+.weather-information i {
+  font-size: 25px;
+}
+
+.weather-information i:not(.weather-location-info i) {
+  margin-left: 15px;
 }
 
 .weather-statement {
@@ -157,9 +183,6 @@ button {
 }
 
 .weather-temperature {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #fff;
   font-size: 120px;
   height: 150px;
@@ -168,7 +191,6 @@ button {
 }
 
 .weather-min-max-temp {
-  display: flex;
   width: 100%;
   font-size: 45px;
   font-weight: bold;
@@ -176,29 +198,16 @@ button {
 }
 
 .weather-min-max-temp div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 50%;
-}
-
-.weather-min-max-temp i {
-  font-size: 25px;
-  margin-left: 15px;
 }
 
 .weather-additional-info {
   font-size: 25px;
-  display: flex;
   width: 100%;
   flex-grow: 2;
 }
 
 .weather-location-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   width: 50%;
   font-size: 25px;
   font-weight: bold;
@@ -210,32 +219,16 @@ button {
   margin-bottom: 0;
 }
 
-.weather-location-info i {
-  font-size: 25px;
-  margin-left: 15px;
-}
-
 .weather-humidity {
   font-size: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 50%;
   font-weight: bold;
-}
-
-.weather-humidity i {
-  font-size: 25px;
-  margin-left: 15px;
 }
 
 .weather-initial-message {
   height: 100%;
   font-size: 35px;
-  display: flex;
-  align-items: center;
   font-weight: bold;
-  text-align: center;
   padding: 0 30px;
 }
 
