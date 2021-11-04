@@ -6,7 +6,12 @@
     />
     <div class="main-container container-fluid py-3">
       <div class="row">
-        <div class="col-3"></div>
+        <h2 class="text-center">Vue Planner</h2>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <WeatherWidget />
+        </div>
         <div class="col-5">
           <Tasks v-if="userUid" />
         </div>
@@ -27,7 +32,8 @@
   import Tasks from '@/components/tasks/Tasks';
   import Header from "@/components/shared/Header";
   import AuthModal from "./components/modals/AuthModal";
-  import userProfile from '@/components/userProfile/UserProfile';
+  import userProfile from '@/components/userProfile/userProfile';
+  import WeatherWidget from '@/components/weather-widget/WeatherWidget'
 
   export default {
     name: 'App',
@@ -36,7 +42,8 @@
       AuthModal,
       Header,
       Tasks,
-      userProfile
+      userProfile,
+      WeatherWidget
     },
     data() {
       return {

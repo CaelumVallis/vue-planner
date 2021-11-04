@@ -72,3 +72,5 @@ export const rankNames = [
     level: 6
   }
 ];
+
+export const API_KEY = 'e4ca8e74b9ce1d7d81d543944f39117c';

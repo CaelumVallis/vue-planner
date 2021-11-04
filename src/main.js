@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from './store';
+import Vuelidate from "vuelidate";
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
