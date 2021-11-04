@@ -11,7 +11,7 @@
           v-for="task in tasks"
           :key="task.id"
           :task="task"
-          @toggleTask="toggleTask"
+          @editTask="editTask"
           @deleteTask="deleteTask"
           @taskSelect="selectCurrentTask"
         />
@@ -45,20 +45,20 @@
       }
     },
     watch: {
-      tasks: function() {
+      tasks() {
         this.$store.dispatch('syncWithStorage');
       }
     },
     created() {
       this.$store.dispatch('fetchTasks');
-      this.currentTask = {...taskDefaultObject}
+      this.currentTask = { ...taskDefaultObject }
     },
     methods: {
-      toggleTask(task) {
-        this.$store.commit('editTask', {...task, completed: !task.completed})
+      editTask(task) {
+        this.$store.commit('editTask', task);
       },
       deleteTask(id) {
-        this.$store.commit('deleteTask', id)
+        this.$store.commit('deleteTask', id);
       },
       selectCurrentTask(task) {
         this.currentTask = task;
@@ -66,7 +66,7 @@
       },
       closeModal() {
         this.modalOpen = false;
-        this.currentTask = {...taskDefaultObject};
+        this.currentTask = { ...taskDefaultObject };
       }
     }
   }

@@ -1,16 +1,17 @@
 <template>
   <nav class="navbar navbar-light px-5">
-    <h3>Hello, {{this.$store.getters.currentUser.username || 'anonymous'}}</h3>
+    <h3>Hello, {{this.$store.getters.currentUser.username}}</h3>
     <button
       @click="$emit('authBtnClick')"
       type="button"
       class="btn btn-outline-primary"
-    >Login</button>
+    >{{authBtnTitle}}</button>
   </nav>
 </template>
 
 <script>
   export default {
-    name: "Header"
+    name: "Header",
+    props: ['authBtnTitle']
   }
 </script>

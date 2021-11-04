@@ -14,15 +14,14 @@ import router from './router';
 
 Vue.config.productionTip = false;
 
-let app;
-
 firebase.initializeApp(firebase_config);
-firebase.auth().onAuthStateChanged(() => {
+let app;
+firebase.auth().onAuthStateChanged((user) => {
   if(!app) {
     app = new Vue({
       store,
       router,
-      render: h => h(App)
+      render: h => h(App, { props: { user } })
     }).$mount('#app');
   }
 });

@@ -12,11 +12,12 @@
       </div>
       <div class="col-6 d-flex justify-content-end align-items-center px-0">
         <div
-          v-if="this.task.taskType === this.constants.taskType.pointsOfTotal"
+          v-if="task.taskType === this.constants.taskType.pointsOfTotal"
           class="d-flex align-items-baseline justify-content-end"
         >
           <input
-            v-model="currentPoints"
+            :value="task.currentPoints || 0"
+            @change="editTask({ currentPoints: $event.target.value })"
             type="number"
             class="rounded form-control p-0 w-100"
           >
@@ -25,9 +26,9 @@
             {{task.pointName}}
           </span>
         </div>
-        <div v-if="this.task.taskType === this.constants.taskType.completed">
+        <div v-if="task.taskType === this.constants.taskType.completed">
           <input
-            @change="$emit('toggleTask', task)"
+            @change="editTask({ completed: !task.completed })"
             :checked="task.completed"
             type="checkbox"
             class="form-check-input mx-1"
@@ -52,20 +53,14 @@
 
   export default {
     props: { task: Object },
-    data() {
-      return {
-        currentPoints: 0,
-      }
-    },
     created() {
       this.constants = modalConstants;
-      this.currentPoints = this.task.currentPoints || 0;
     },
-    watch: {
-      currentPoints() {
-        this.$store.commit('editTask', {...this.task, currentPoints: this.currentPoints});
+    methods: {
+      editTask(change) {
+        this.$emit('editTask', { ...this.task, ...change });
       }
-    }
+    },
   }
 </script>
 

@@ -1,13 +1,16 @@
 <template>
   <div id="app">
-    <Header @authBtnClick="navigateTo('/login')"/>
-    <div class="main-container container-fluid">
+    <Header
+      :authBtnTitle="authBtnTitle"
+      @authBtnClick="authHandler"
+    />
+    <div class="main-container container-fluid py-3">
       <div class="row">
-        <div class="col"></div>
-        <div class="col-6">
-          <Tasks />
+        <div class="col-3"></div>
+        <div class="col-5">
+          <Tasks v-if="userUid" />
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <userProfile />
         </div>
       </div>
@@ -24,10 +27,11 @@
   import Tasks from '@/components/tasks/Tasks';
   import Header from "@/components/shared/Header";
   import AuthModal from "./components/modals/AuthModal";
-  import userProfile from '@/components/userProfile/userProfile';
+  import userProfile from '@/components/userProfile/UserProfile';
 
   export default {
     name: 'App',
+    props: ['user'],
     components: {
       AuthModal,
       Header,
@@ -36,7 +40,19 @@
     },
     data() {
       return {
-        authModalOpen: false
+        authModalOpen: false,
+      }
+    },
+    created() {
+      const { uid, email } = this.user._delegate;
+      this.$store.dispatch('setToState', { uid, email });
+    },
+    computed: {
+      authBtnTitle() {
+        return this.userUid ? 'Log out' : 'Login';
+      },
+      userUid() {
+        return this.$store.getters.currentUser.uid
       }
     },
     watch: {
@@ -44,9 +60,17 @@
         if (to.path === '/login' || to.path === '/register') {
           this.toggleAuthModal(true);
         }
-      }
+      },
+
     },
     methods: {
+      authHandler() {
+        if(this.userUid) {
+          this.$store.dispatch('logout');
+        } else {
+          this.navigateTo('/login');
+        }
+      },
       navigateTo(path) {
         if(this.$route.path !== path) {
           this.$router.push(path);

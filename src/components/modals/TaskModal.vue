@@ -18,7 +18,7 @@
           <div class="row">
             <div class="col-4">
               <div class="form-group">
-                <img id="imgPreview" v-if="formData.imageUrl" :src="formData.imageUrl" class="mb-2"/>
+                <img v-if="formData.imageUrl" :src="formData.imageUrl" class="mb-2 imgPreview"/>
                 <input
                   @change="imageUpload"
                   type="file"
@@ -163,9 +163,10 @@
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 1;
   }
 
-  #imgPreview {
+  .imgPreview {
     max-height:75%;
     max-width:75%;
     height:auto;
