@@ -36,6 +36,11 @@
                     placeholder="Title"
                     :class="{ invalid: ($v.formData.title.$dirty && !$v.formData.title.required) || ($v.formData.title.$dirty && !$v.formData.title.required) }">
                 </div>
+                <div 
+                  class="invalid-validation"
+                  v-if="$v.formData.title.$dirty && !$v.formData.title.required">
+                  Please enter a title for your task!
+                </div>
                 <div class="row mb-2">
                   <div class="form-group col-6">
                     <select
@@ -55,6 +60,16 @@
                       placeholder="Point value"
                       :class="{ invalid: ($v.formData.pointValue.$dirty && !$v.formData.pointValue.required) || ($v.formData.pointValue.$dirty && !$v.formData.pointValue.between) }"
                     >
+                    <div 
+                      class="invalid-validation"
+                      v-if="$v.formData.pointValue.$dirty && !$v.formData.pointValue.required">
+                      Please enter amount of points!
+                    </div>
+                    <div 
+                      class="invalid-validation"
+                      v-else-if="$v.formData.pointValue.$dirty && !$v.formData.pointValue.between">
+                      Please enter correct amount of points!
+                    </div>
                   </div>
                 </div>
                 <div
@@ -67,8 +82,18 @@
                       type="text"
                       class="form-control"
                       placeholder="Total points"
-                      :class="{ invalid: ($v.formData.pointValue.$dirty && !$v.formData.pointValue.required) }"
+                      :class="{ invalid: ($v.formData.totalPoints.$dirty && !$v.formData.totalPoints.required) }"
                     >
+                    <div 
+                      class="invalid-validation"
+                      v-if="$v.formData.totalPoints.$dirty && !$v.formData.totalPoints.required">
+                      Please enter amount of total points!
+                    </div>
+                    <div 
+                      class="invalid-validation"
+                      v-else-if="$v.formData.totalPoints.$dirty && !$v.formData.totalPoints.between">
+                      Please enter correct amount of total points!
+                    </div>
                   </div>
                   <div class="form-group col-6">
                     <input
@@ -76,7 +101,13 @@
                       type="text"
                       class="form-control"
                       placeholder="Point name"
+                      :class="{ invalid: $v.formData.pointName.$dirty && !$v.formData.pointName.required}"
                     >
+                    <div 
+                      class="invalid-validation"
+                      v-if="$v.formData.pointName.$dirty && !$v.formData.pointName.required">
+                      Please enter name for points!
+                    </div>
                   </div>
                   <!--<div class="form-group col-6">-->
                   <!--<input-->
@@ -133,7 +164,13 @@
         },
         totalPoints: {
           required: requiredIf(function () {
-            return this.formData.taskType === 'Points / total'
+            return this.formData.taskType === 'Points / total';
+          }),
+          between: between(20, 30)
+        },
+        pointName: {
+          required: requiredIf(function() {
+            return this.formData.taskType === 'Points / total';
           })
         }
       }
@@ -192,5 +229,18 @@
     max-width:75%;
     height:auto;
     width:auto;
+  }
+
+  .invalid {
+    border-bottom: 2px solid red;
+  }
+
+  .invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 25%);
+  }
+
+  .invalid-validation {
+    color: red;
+    margin: 10px 0;
   }
 </style>
