@@ -16,14 +16,14 @@
         <h4>Next lvl:</h4>
         <span class="px-2">{{rank.nextRank.title}}</span>
       </div>
-      <h4>Points to next lvl: {{1000 - userInfo.totalPoints}}</h4>
+      <h4>Points to next lvl: {{pointsToNextLvl}}</h4>
     <div class="progress">
       <div class="progress-bar progress-bar-striped bg-success"
            role="progressbar"
-           :style="`width: ${userInfo.totalPoints / 10}%`"
+           :style="`width: ${progressBarWidth}%`"
            :aria-valuenow="userInfo.totalPoints"
-           aria-valuemin="0"
-           aria-valuemax="100">
+           :aria-valuemin="rank.currentRank.points"
+           :aria-valuemax="rank.nextRank.points">
            {{userInfo.totalPoints}}
       </div>
     </div>
@@ -47,6 +47,15 @@
           return currentRank.level + 1 === item.level;
         }) || currentRank;
         return { currentRank, nextRank };
+      },
+      progressBarWidth() {
+        const pointsPerPercent = (this.rank.nextRank.points - this.rank.currentRank.points) / 100;
+        const pointsForThisLevel = this.userInfo.totalPoints - this.rank.currentRank.points;
+        return pointsPerPercent ? pointsForThisLevel / pointsPerPercent : 100;
+      },
+      pointsToNextLvl() {
+        const result = this.rank.nextRank.points - this.userInfo.totalPoints;
+        return result > 0 ? result : 0;
       }
     },
     created() {
