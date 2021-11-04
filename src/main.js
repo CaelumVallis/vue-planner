@@ -13,6 +13,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App.vue';
 import router from './router';
 
+Vue.use(Vuelidate);
+
 Vue.config.productionTip = false;
 
 firebase.initializeApp(firebase_config);

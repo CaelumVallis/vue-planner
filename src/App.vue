@@ -32,7 +32,7 @@
   import Tasks from '@/components/tasks/Tasks';
   import Header from "@/components/shared/Header";
   import AuthModal from "./components/modals/AuthModal";
-  import userProfile from '@/components/userProfile/userProfile';
+  import userProfile from '@/components/userProfile/UserProfile';
   import WeatherWidget from '@/components/weather-widget/WeatherWidget'
 
   export default {

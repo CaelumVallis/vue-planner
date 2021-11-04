@@ -166,7 +166,7 @@
         title: {required},
         pointValue: {
           required,
-          between: between(0, 10)
+          between: between(0, 100)
         },
         taskType: {
           required
@@ -175,7 +175,7 @@
           required: requiredIf(function () {
             return this.formData.taskType === 'Points / total';
           }),
-          between: between(20, 30)
+          between: between(0, 50)
         },
         pointName: {
           required: requiredIf(function() {
