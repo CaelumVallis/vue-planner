@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <Header @authBtnClick="navigateTo('/login')"/>
-    <div class="main-container container-fluid">
+    <Header
+      :authBtnTitle="authBtnTitle"
+      @authBtnClick="authHandler"
+    />
+    <div class="main-container container-fluid py-3">
       <div class="row">
         <h2 class="text-center">Vue Planner</h2>
       </div>
@@ -9,10 +12,10 @@
         <div class="col-3">
           <WeatherWidget />
         </div>
-        <div class="col-6">
-          <Tasks />
+        <div class="col-5">
+          <Tasks v-if="userUid" />
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <userProfile />
         </div>
       </div>
@@ -34,6 +37,7 @@
 
   export default {
     name: 'App',
+    props: ['user'],
     components: {
       AuthModal,
       Header,
@@ -43,7 +47,19 @@
     },
     data() {
       return {
-        authModalOpen: false
+        authModalOpen: false,
+      }
+    },
+    created() {
+      const { uid, email } = this.user._delegate;
+      this.$store.dispatch('setToState', { uid, email });
+    },
+    computed: {
+      authBtnTitle() {
+        return this.userUid ? 'Log out' : 'Login';
+      },
+      userUid() {
+        return this.$store.getters.currentUser.uid
       }
     },
     watch: {
@@ -51,9 +67,17 @@
         if (to.path === '/login' || to.path === '/register') {
           this.toggleAuthModal(true);
         }
-      }
+      },
+
     },
     methods: {
+      authHandler() {
+        if(this.userUid) {
+          this.$store.dispatch('logout');
+        } else {
+          this.navigateTo('/login');
+        }
+      },
       navigateTo(path) {
         if(this.$route.path !== path) {
           this.$router.push(path);
