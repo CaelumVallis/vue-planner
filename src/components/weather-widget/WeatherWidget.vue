@@ -52,10 +52,12 @@
 </template>
 
 <script>
+
+import { API_KEY } from '../../assets/constants';
+
   export default {
     data() {
       return {
-        API_KEY: 'e4ca8e74b9ce1d7d81d543944f39117c',
         city: '',
         searched: false,
         error: false,
@@ -77,7 +79,7 @@
     methods: {
       async getWeather() {
         try {
-          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${this.API_KEY}`);
+          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${API_KEY}`);
           const data = await response.json();
           if (data.cod === 200) {
             this.setWeatherData(data);
@@ -113,7 +115,7 @@
       const prevCity = localStorage.getItem('weather');
 
       if (prevCity !== null) {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${prevCity}&appid=${this.API_KEY}`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${prevCity}&appid=${API_KEY}`);
         const data = await response.json();
         this.setWeatherData(data);
         this.searched = true;

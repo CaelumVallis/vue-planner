@@ -26,3 +26,5 @@ export const taskDefaultObject = {
   completed: false,
   imageUrl: ''
 };
+
+export const API_KEY = 'e4ca8e74b9ce1d7d81d543944f39117c';
