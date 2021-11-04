@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from './store';
+import Vuelidate from "vuelidate";
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -13,6 +14,8 @@ import App from './App.vue';
 import router from './router';
 
 Vue.config.productionTip = false;
+
+Vue.use(Vuelidate);
 
 let app;
 

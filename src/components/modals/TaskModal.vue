@@ -33,7 +33,8 @@
                     v-model="formData.title"
                     type="text"
                     class="form-control"
-                    placeholder="Title">
+                    placeholder="Title"
+                    :class="{ invalid: ($v.formData.title.$dirty && !$v.formData.title.required) || ($v.formData.title.$dirty && !$v.formData.title.required) }">
                 </div>
                 <div class="row mb-2">
                   <div class="form-group col-6">
@@ -52,6 +53,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Point value"
+                      :class="{ invalid: ($v.formData.pointValue.$dirty && !$v.formData.pointValue.required) || ($v.formData.pointValue.$dirty && !$v.formData.pointValue.between) }"
                     >
                   </div>
                 </div>
@@ -65,6 +67,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Total points"
+                      :class="{ invalid: ($v.formData.pointValue.$dirty && !$v.formData.pointValue.required) }"
                     >
                   </div>
                   <div class="form-group col-6">
@@ -109,6 +112,7 @@
 
 <script>
   import { modalConstants } from "../../assets/constants";
+  import { required, between, requiredIf } from "vuelidate/lib/validators"
 
   export default {
     name: "TaskModal",
@@ -118,6 +122,20 @@
         formData: {},
         titles: {},
         errors: []
+      }
+    },
+    validations: {
+      formData: {
+        title: {required},
+        pointValue: {
+          required,
+          between: between(0, 10)
+        },
+        totalPoints: {
+          required: requiredIf(function () {
+            return this.formData.taskType === 'Points / total'
+          })
+        }
       }
     },
     created() {
@@ -131,6 +149,10 @@
         this.formData.id ? this.editTask() : this.addTask();
       },
       addTask() {
+        if(this.$v.$invalid) {
+          this.$v.$touch()
+          return
+        }
         this.$store.commit('addTask', {...this.formData, id: this.getId()});
         this.$emit('close');
       },
