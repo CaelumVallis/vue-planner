@@ -45,12 +45,18 @@
                   <div class="form-group col-6">
                     <select
                       v-model="formData.taskType"
-                      class="form-control">
+                      class="form-control"
+                      :class="{ invalid: $v.formData.taskType.$dirty && !$v.formData.taskType.required }">
                       <option disabled value="">Task type</option>
                       <option>{{this.constants.taskType.completed}}</option>
                       <option>{{this.constants.taskType.pointsOfTotal}}</option>
                       <option disabled >{{this.constants.taskType.pointsOfTotalForTime}}</option>
                     </select>
+                    <div 
+                      class="invalid-validation"
+                      v-if="$v.formData.taskType.$dirty && !$v.formData.taskType.required">
+                      Please choose one of the type!
+                    </div>
                   </div>
                   <div class="form-group col-6">
                     <input
@@ -161,6 +167,9 @@
         pointValue: {
           required,
           between: between(0, 10)
+        },
+        taskType: {
+          required
         },
         totalPoints: {
           required: requiredIf(function () {
