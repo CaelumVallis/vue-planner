@@ -15,11 +15,17 @@
           v-if="task.taskType === this.constants.taskType.pointsOfTotal"
           class="d-flex align-items-baseline justify-content-end"
         >
+          <small 
+            v-if="warning"
+            class="points-warning">
+            {{ task.totalPoints }} is max.
+          </small>
           <input
             :value="task.currentPoints || 0"
-            @change="editTask({ currentPoints: $event.target.value })"
+            @change="editTask({ currentPoints: $event.target.value }, $event)"
             type="number"
             class="rounded form-control p-0 w-100"
+            :class="{ warning }"
           >
           <span class="mx-1">
             <span v-if="task.totalPoints">/ {{task.totalPoints}}</span>
@@ -53,14 +59,31 @@
 
   export default {
     props: { task: Object },
+    data() {
+      return {
+        warning: false
+      }
+    },
     created() {
       this.constants = modalConstants;
     },
     methods: {
-      editTask(change) {
+      editTask(change, event) {
+        if (+change.currentPoints > +this.task.totalPoints) {
+          event.target.value = this.task.currentPoints;
+          this.pointsWarning();
+          return;
+        }
         this.$emit('editTask', { ...this.task, ...change });
+      },
+      pointsWarning() {
+        this.warning = true;
+        setTimeout(() => {
+          this.warning = false;
+        }, 5000)
       }
     },
+    
   }
 </script>
 
@@ -92,5 +115,15 @@
 
   .edit-btn {
     right: 15px;
+  }
+
+  .points-warning {
+    color: rgb(255, 0, 0);
+    margin-right: 7px;
+  }
+
+  .warning {
+    border: 1px solid rgb(255, 0, 0);
+    box-shadow: 0 0 0 0.25rem rgb(255 0 0 / 25%);
   }
 </style>
